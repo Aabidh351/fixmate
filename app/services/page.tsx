@@ -1,4 +1,5 @@
 
+import ServiceFilters from "@/components/services/ServiceFIlters";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -14,9 +15,21 @@ type Service = {
   technicianName: string;
 };
 
-async function getServices(): Promise<Service[]> {
+
+async function getServices(searchParams: {
+  search?: string;
+  category?: string;
+  serviceMode?: string;
+  sort?: string;
+}): Promise<Service[]> {
+  const params = new URLSearchParams();
+
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value) params.set(key, value);
+  });
+
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/services?${params.toString()}`,
     { cache: "no-store" }
   );
 
@@ -27,8 +40,19 @@ async function getServices(): Promise<Service[]> {
   return response.json();
 }
 
-export default async function ServicesPage() {
-  const services = await getServices();
+
+export default async function ServicesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    search?: string;
+    category?: string;
+    serviceMode?: string;
+    sort?: string;
+  }>;
+}) {
+  const filters = await searchParams;
+  const services = await getServices(filters);
 
   return (
     <main className="mx-auto min-h-screen w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -40,6 +64,8 @@ export default async function ServicesPage() {
           Find the right technician to get your devices working again.
         </p>
       </div>
+
+      <ServiceFilters />
 
       {services.length === 0 ? (
         <p className="py-16 text-center text-slate-500">
