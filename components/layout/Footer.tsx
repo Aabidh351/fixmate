@@ -21,13 +21,13 @@ const quickLinks = [
 export default function Footer() {
   return (
     <footer className="mt-auto bg-secondary text-white">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-7xl px-4 py-4 sm:py-14 sm:px-6 lg:px-8">
+        <div className="grid gap-10 grid-cols-2 lg:grid-cols-4">
           
           <div>
             <Link href="/" className="inline-flex items-center">
               <Image
-                src="/fixmate-logo.png"
+                src="/fixmate-footer-logo.jpg"
                 alt="FixMate"
                 width={160}
                 height={50}
@@ -45,7 +45,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold">Quick Links</h3>
+            <h3 className="text-lg mt-40 sm:mt-0 font-bold">Quick Links</h3>
             <ul className="mt-5 space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
