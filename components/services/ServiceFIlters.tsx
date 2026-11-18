@@ -77,6 +77,14 @@ export default function ServiceFilters() {
         <option value="price-low">Price: Low to High</option>
         <option value="price-high">Price: High to Low</option>
       </select>
+
+      <button
+      type="button"
+      onClick={() => router.push(pathname)}
+      className="h-10 rounded-lg border border-slate-200 px-4 text-sm font-semibold text-secondary transition hover:bg-slate-50 sm:col-span-2 lg:col-span-4"
+    >
+      Clear All Filters
+    </button>
     </div>
   );
 }

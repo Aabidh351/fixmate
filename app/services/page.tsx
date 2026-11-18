@@ -67,6 +67,16 @@ export default async function ServicesPage({
 
       <ServiceFilters />
 
+      <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-secondary">
+            Available Services
+          </h2>
+        
+          <p className="text-sm text-slate-500">
+            {services.length} {services.length === 1 ? "service" : "services"} found
+          </p>
+        </div>
+
       {services.length === 0 ? (
         <p className="py-16 text-center text-slate-500">
           No services available right now.
