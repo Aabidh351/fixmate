@@ -18,6 +18,7 @@ export default function Navbar() {
               alt="FixMate"
               width={160}
               height={50}
+              loading="eager"
               priority
               className="h-24 w-auto object-contain"
             />
