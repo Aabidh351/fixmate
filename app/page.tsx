@@ -1,5 +1,6 @@
 import Hero from "@/components/home/Hero";
 import HowItWorks from "@/components/home/HowItWorks";
+import PopularCategories from "@/components/home/PopularCategories";
 
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <div>
       <Hero/>
       <HowItWorks/>
+      <PopularCategories/>
     </div>
   );
 }
