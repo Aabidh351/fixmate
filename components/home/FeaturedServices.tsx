@@ -1,4 +1,4 @@
-
+import { connection } from "next/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,6 +32,8 @@ async function getFeaturedServices(): Promise<Service[]> {
 }
 
 export default async function FeaturedServices() {
+  await connection();
+
   const services = await getFeaturedServices();
 
   return (
