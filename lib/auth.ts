@@ -43,7 +43,7 @@ export const auth = betterAuth({
         type: ["customer", "technician", "admin"],
         required: false,
         defaultValue: "customer",
-        input: true,
+        input: false,
       },
       phone: {
         type: "string",
@@ -66,8 +66,9 @@ export const auth = betterAuth({
   databaseHooks: {
     user: {
       create: {
-        before: async (user) => {
-          const role = user.role ?? "customer";
+        before: async (user, ctx) => {
+          const requestedRole = ctx?.body?.role;
+          const role = requestedRole ?? "customer";
 
           if (role !== "customer" && role !== "technician") {
             throw new APIError("BAD_REQUEST", {
@@ -81,18 +82,6 @@ export const auth = betterAuth({
               role,
             },
           };
-        },
-      },
-
-      update: {
-        before: async (user) => {
-          if (Object.prototype.hasOwnProperty.call(user, "role")) {
-            throw new APIError("FORBIDDEN", {
-              message: "You cannot change your account role.",
-            });
-          }
-
-          return { data: user };
         },
       },
     },

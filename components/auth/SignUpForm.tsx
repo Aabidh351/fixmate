@@ -146,10 +146,12 @@ export default function SignUpForm() {
         </div>
       </div>
 
+      
       <div>
         <label className="mb-2 block text-sm font-medium text-[#263746]">
           Account Type
         </label>
+                
         <select
           name="role"
           defaultValue="customer"
@@ -157,8 +159,12 @@ export default function SignUpForm() {
         >
           <option value="customer">Customer</option>
           <option value="technician">Technician</option>
+          <option value="admin" disabled>
+            Admin (Unavailable)
+          </option>
         </select>
       </div>
+
 
       <button
         type="submit"
