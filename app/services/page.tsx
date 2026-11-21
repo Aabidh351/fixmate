@@ -117,7 +117,7 @@ export default async function ServicesPage({
 
                 <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
                   <p className="text-lg font-extrabold text-secondary">
-                    ৳{service.basePrice.toLocaleString("en-BD")}
+                    ${service.basePrice.toLocaleString("en-US")}
                   </p>
 
                   <Link

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { connection } from "next/server";
 
 type Service = {
   _id: string;
@@ -14,6 +15,12 @@ type Service = {
   serviceMode: string;
   serviceArea: string;
   technicianName: string;
+  technician: {
+    name: string;
+    image: string | null;
+    area: string;
+    bio: string;
+  } | null;
 };
 
 async function getService(id: string): Promise<Service> {
@@ -38,6 +45,7 @@ export default async function ServiceDetailsPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await connection();
   const { id } = await params;
   const service = await getService(id);
 
@@ -73,10 +81,48 @@ export default async function ServiceDetailsPage({
             {service.description}
           </p>
 
+          <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5">
+            <h2 className="text-lg font-bold text-secondary">
+              About the Technician
+            </h2>
+
+            <div className="mt-4 flex items-start gap-4">
+              {service.technician?.image ? (
+                <div className="relative size-16 shrink-0 overflow-hidden rounded-full">
+                  <Image
+                    src={service.technician.image}
+                    alt={service.technician.name}
+                    fill
+                    sizes="64px"
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xl font-bold text-primary">
+                  {service.technician?.name?.charAt(0) || "T"}
+                </div>
+              )}
+
+              <div>
+                <h3 className="font-bold text-secondary">
+                  {service.technician?.name || service.technicianName}
+                </h3>
+            
+                <p className="mt-1 text-sm text-slate-500">
+                  {service.technician?.area || "Area not specified"}
+                </p>
+            
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {service.technician?.bio || "No technician bio available."}
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
             <p className="text-sm text-slate-500">Starting Price</p>
             <p className="mt-1 text-3xl font-extrabold text-secondary">
-              ৳{service.basePrice.toLocaleString("en-BD")}
+              ${service.basePrice.toLocaleString("en-US")}
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-5 text-sm">
@@ -109,11 +155,12 @@ export default async function ServiceDetailsPage({
               </div>
             </div>
 
-            <button
-              className="mt-8 w-full rounded-lg bg-primary px-6 py-3 font-semibold text-white transition hover:bg-primary/90"
+            <Link
+              href={`/services/${service._id}/request`}
+              className="mt-8 block w-full rounded-lg bg-primary px-6 py-3 text-center font-semibold text-white transition hover:bg-primary/90"
             >
               Request This Service
-            </button>
+            </Link>
           </div>
         </div>
       </div>

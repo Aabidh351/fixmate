@@ -1,4 +1,4 @@
-
+import { jwt } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
 import { APIError } from "better-auth/api";
 import { MongoClient } from "mongodb";
@@ -25,6 +25,19 @@ const db = client.db("fixmateDB");
 
 export const auth = betterAuth({
   database: mongodbAdapter(db, { client }),
+  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+
+  plugins: [
+  jwt({
+    jwt: {
+      definePayload: ({ user }) => ({
+        id: user.id,
+        email: user.email,
+        role: user.role,
+      }),
+    },
+  }),
+],
 
   emailAndPassword: {
     enabled: true,
