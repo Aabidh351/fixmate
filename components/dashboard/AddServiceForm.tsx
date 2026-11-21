@@ -149,6 +149,7 @@ export default function AddServiceForm() {
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         >
           <option value="" disabled>Select category</option>
+          <option value="Laptop & PC">Laptop & PC</option>
           <option value="AC Repair">AC Repair</option>
           <option value="Refrigerator Repair">Refrigerator Repair</option>
           <option value="TV Repair">TV Repair</option>
@@ -200,8 +201,8 @@ export default function AddServiceForm() {
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         >
           <option value="" disabled>Select service mode</option>
-          <option value="onsite">On-site</option>
-          <option value="remote">Remote</option>
+          <option value="Home Visit">Home Visit</option>
+          <option value="Shop Drop-off">Shop Drop-off</option>
         </select>
       </div>
 
