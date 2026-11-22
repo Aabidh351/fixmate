@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import BookingRequestActions from "@/components/dashboard/BookingRequestActions";
 
 type Booking = {
   _id: string;
@@ -132,6 +133,10 @@ async function RequestsList() {
                     {booking.problemDescription}
                   </p>
                 </div>
+
+                {booking.status === "requested" && (
+                  <BookingRequestActions bookingId={booking._id} />
+                )}
               </div>
             </div>
           ))}
