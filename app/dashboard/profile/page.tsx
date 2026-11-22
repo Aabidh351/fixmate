@@ -16,7 +16,7 @@ export default async function ProfilePage() {
   const user = session.user;
 
   return (
-    <div className="mx-auto max-w-3xl my-10 sm:my-20">
+    <div className="mx-auto my-10 max-w-3xl sm:my-20">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-[#142B3A]">
           My Profile
@@ -30,9 +30,11 @@ export default async function ProfilePage() {
         <ProfileForm
           name={user.name || ""}
           email={user.email || ""}
+          role={user.role || "customer"}
           phone={user.phone || ""}
           area={user.area || ""}
           bio={user.bio || ""}
+          image={user.image || ""}
         />
       </div>
     </div>
