@@ -14,13 +14,14 @@ const globalForMongo = globalThis as typeof globalThis & {
   mongoClient?: MongoClient;
 };
 
-const client = globalForMongo.mongoClient ?? new MongoClient(uri, { maxPoolSize: 5 });
-globalForMongo.mongoClient = client; // always cache, including production
+const client =
+  globalForMongo.mongoClient ??
+  (globalForMongo.mongoClient = new MongoClient(uri));
 
 const db = client.db("fixmateDB");
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, { client, transaction: false }),
+  database: mongodbAdapter(db, { client }),
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
 
   plugins: [
