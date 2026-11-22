@@ -23,9 +23,39 @@ export default function UserMenu() {
 
   const user = session?.user;
 
+  const dashboardLink =
+    user?.role === "admin"
+      ? "/dashboard/admin"
+      : user?.role === "technician"
+        ? "/dashboard/technician"
+        : "/dashboard/customer";
+
+  const cta =
+    user?.role === "admin"
+      ? {
+          name: "Admin Dashboard",
+          href: "/dashboard/admin",
+        }
+      : user?.role === "technician"
+        ? {
+            name: "Manage Services",
+            href: "/dashboard/technician/my-services",
+          }
+        : {
+            name: "Find a Technician",
+            href: "/services",
+          };
+
   if (!user) {
     return (
       <div className="flex items-center gap-2">
+        <Link
+          href="/services"
+          className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90 md:block"
+        >
+          Find a Technician
+        </Link>
+
         <Link
           href="/sign-in"
           className="rounded-lg px-3 py-2 text-sm font-semibold text-secondary hover:text-primary"
@@ -63,16 +93,8 @@ export default function UserMenu() {
     router.refresh();
   };
 
-  const dashboardLink =
-    user.role === "admin"
-      ? "/dashboard/admin"
-      : user.role === "technician"
-        ? "/dashboard/technician"
-        : "/dashboard/customer";
-
   return (
     <div className="flex items-center gap-3">
-
       <div className="relative">
         <button
           type="button"
@@ -160,13 +182,13 @@ export default function UserMenu() {
             </div>
           </>
         )}
-        
       </div>
+
       <Link
-        href="/services"
-        className="hidden md:block rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90"
+        href={cta.href}
+        className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90 md:block"
       >
-        Find a Technician
+        {cta.name}
       </Link>
     </div>
   );
