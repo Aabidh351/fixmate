@@ -4,27 +4,18 @@ import { APIError } from "better-auth/api";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
-const uri = process.env.MONGO_URI;
-
-if (!uri) {
-  throw new Error("MONGO_URI is not configured.");
-}
 
 const globalForMongo = globalThis as typeof globalThis & {
   mongoClient?: MongoClient;
 };
 
-const client =
-  globalForMongo.mongoClient ?? new MongoClient(uri);
-
-if (process.env.NODE_ENV !== "production") {
-  globalForMongo.mongoClient = client;
-}
+const client = globalForMongo.mongoClient ?? new MongoClient(uri, { maxPoolSize: 5 });
+globalForMongo.mongoClient = client; // always cache, including production
 
 const db = client.db("fixmateDB");
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db, { client }),
+  database: mongodbAdapter(db, { client, transaction: false }),
   baseURL: process.env.NEXT_PUBLIC_APP_URL,
 
   plugins: [
