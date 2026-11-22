@@ -13,10 +13,12 @@ const globalForMongo = globalThis as typeof globalThis & {
 function connect(): Promise<MongoClient> {
   const client = new MongoClient(uri!, {
     // Vercel runs many short-lived instances. Keep each pool small so a traffic
-    // spike cannot exhaust the Atlas connection limit.
-    maxPoolSize: 5,
+    // spike cannot exhaust the Atlas connection limit, and fail fast if the
+    // Atlas hosts are unreachable instead of holding a function open for 80s.
+    maxPoolSize: 3,
     minPoolSize: 0,
-    maxIdleTimeMS: 60_000,
+    maxIdleTimeMS: 30_000,
+    connectTimeoutMS: 10_000,
     serverSelectionTimeoutMS: 10_000,
   });
 
