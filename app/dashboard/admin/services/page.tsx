@@ -17,6 +17,7 @@ export type Service = {
   technicianName: string;
   technicianEmail: string;
   approvalStatus: string;
+  isAvailable: boolean;
   createdAt: string;
 };
 

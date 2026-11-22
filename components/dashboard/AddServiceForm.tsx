@@ -88,6 +88,8 @@ export default function AddServiceForm() {
             description: formData.get("description"),
             category: formData.get("category"),
             basePrice: Number(formData.get("basePrice")),
+            estimatedDuration: formData.get("estimatedDuration"),
+            serviceArea: formData.get("serviceArea"),
             image: imageUrl,
             serviceMode: formData.get("serviceMode"),
           }),
@@ -149,11 +151,14 @@ export default function AddServiceForm() {
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         >
           <option value="" disabled>Select category</option>
+          <option value="Smartphone">Smartphone</option>
           <option value="Laptop & PC">Laptop & PC</option>
-          <option value="AC Repair">AC Repair</option>
-          <option value="Refrigerator Repair">Refrigerator Repair</option>
-          <option value="TV Repair">TV Repair</option>
-          <option value="Washing Machine Repair">Washing Machine Repair</option>
+          <option value="AC">AC</option>
+          <option value="Refrigerator">Refrigerator</option>
+          <option value="TV">TV</option>
+          <option value="Washing Machine">Washing Machine</option>
+          <option value="Electrical">Electrical</option>
+          <option value="Microwave Oven">Mircrowave Oven</option>
           <option value="Other">Other</option>
         </select>
       </div>
@@ -170,6 +175,29 @@ export default function AddServiceForm() {
           className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         />
       </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium">Estimated Duration</label>
+        <input
+          name="estimatedDuration"
+          placeholder="e.g. 2-3 hours"
+          required
+          className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+        />
+
+
+      </div>
+
+      <div>
+        <label className="mb-2 block text-sm font-medium">Service Area</label>
+        <input
+          name="serviceArea"
+          placeholder="e.g. Chattogram"
+          required
+          className="w-full rounded-lg border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+        />
+      </div>
+      
 
       <div>
         <label className="mb-2 block text-sm font-medium">Service Image</label>
