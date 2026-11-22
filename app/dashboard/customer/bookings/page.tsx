@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import Link from "next/link";
 import BookingCancelButton from "@/components/dashboard/BookingCancelButton";
+import PayNowButton from "@/components/dashboard/PayNowButton";
 
 type Booking = {
   _id: string;
@@ -135,6 +136,10 @@ export default async function CustomerBookingsPage() {
                     {booking.paymentStatus}
                   </p>
                 </div>
+                {booking.status === "completed" &&
+  booking.paymentStatus === "unpaid" && (
+    <PayNowButton bookingId={booking._id} />
+  )}
                 
               </div>
               {booking.status === "requested" && (

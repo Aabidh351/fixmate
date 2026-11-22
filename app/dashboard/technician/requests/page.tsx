@@ -134,9 +134,10 @@ async function RequestsList() {
                   </p>
                 </div>
 
-                {booking.status === "requested" && (
-                  <BookingRequestActions bookingId={booking._id} />
-                )}
+                <BookingRequestActions
+                  bookingId={booking._id}
+                  status={booking.status}
+                />
               </div>
             </div>
           ))}
