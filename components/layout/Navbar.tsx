@@ -2,18 +2,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import UserMenu from "@/components/layout/UserMenu";
-
-const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Services", href: "/services" },
-  { name: "About", href: "/about" },
-];
+import NavLinks from "@/components/layout/NavLinks";
 
 export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
       <nav className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        
+
+        {/* Logo */}
         <Link href="/" className="flex items-center">
           <Image
             src="/fixmate-logo.png"
@@ -27,17 +23,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-semibold text-secondary transition-colors hover:text-primary"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
+        <NavLinks variant="desktop" />
 
         {/* Desktop User Menu */}
         <div className="hidden md:block">
@@ -69,17 +55,7 @@ export default function Navbar() {
             </summary>
 
             <div className="absolute right-0 top-14 z-50 w-64 rounded-xl border border-slate-200 bg-white p-3 shadow-xl shadow-slate-900/10">
-              <div className="flex flex-col gap-1">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="rounded-lg px-3 py-3 text-sm font-semibold text-secondary transition-colors hover:bg-primary/5 hover:text-primary"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </div>
+              <NavLinks variant="mobile" />
             </div>
           </details>
         </div>
