@@ -4,6 +4,11 @@ import { APIError } from "better-auth/api";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
+const uri = process.env.MONGO_URI;
+
+if (!uri) {
+  throw new Error("MONGO_URI is not configured.");
+}
 
 const globalForMongo = globalThis as typeof globalThis & {
   mongoClient?: MongoClient;
