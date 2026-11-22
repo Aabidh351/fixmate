@@ -47,31 +47,24 @@ export default function UserMenu() {
           };
 
   if (!user) {
-    return (
-      <div className="flex items-center gap-2">
-        <Link
-          href="/services"
-          className="hidden rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary/90 md:block"
-        >
-          Find a Technician
-        </Link>
+  return (
+    <div className="flex items-center gap-2">
+      <Link
+        href="/sign-in"
+        className="rounded-lg px-3 py-2 text-sm font-semibold text-secondary hover:text-primary"
+      >
+        Sign In
+      </Link>
 
-        <Link
-          href="/sign-in"
-          className="rounded-lg px-3 py-2 text-sm font-semibold text-secondary hover:text-primary"
-        >
-          Sign In
-        </Link>
-
-        <Link
-          href="/sign-up"
-          className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90"
-        >
-          Get Started
-        </Link>
-      </div>
-    );
-  }
+      <Link
+        href="/sign-up"
+        className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary/90"
+      >
+        Get Started
+      </Link>
+    </div>
+  );
+}
 
   const initials = user.name
     ?.split(" ")
