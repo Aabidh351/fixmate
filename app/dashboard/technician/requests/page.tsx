@@ -15,6 +15,7 @@ type Booking = {
   preferredDate: string;
   problemDescription: string;
   status: string;
+  paymentStatus: string;
   basePrice: number;
   createdAt: string;
 };
@@ -86,9 +87,23 @@ async function RequestsList() {
                   </p>
                 </div>
 
-                <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium capitalize text-slate-700">
-                  {booking.status}
-                </span>
+                <div className="flex flex-wrap gap-2">
+  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium capitalize text-slate-700">
+    {booking.status}
+  </span>
+
+  {booking.status === "completed" && (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${
+        booking.paymentStatus === "paid"
+          ? "bg-green-100 text-green-700"
+          : "bg-amber-100 text-amber-700"
+      }`}
+    >
+      {booking.paymentStatus === "paid" ? "Paid" : "Unpaid"}
+    </span>
+  )}
+</div>
               </div>
 
               <div className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
