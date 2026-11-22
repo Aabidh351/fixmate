@@ -13,7 +13,7 @@ export default function Loading() {
         </h2>
 
         <p className="mt-2 text-sm text-slate-500">
-          Getting Dashboard for you...
+          Getting Your Dashboard...
         </p>
       </div>
     </main>

@@ -42,5 +42,8 @@ export default async function AdminUsersPage() {
 
   const users: AdminUser[] = await response.json();
 
-  return <AdminUsersList initialUsers={users} />;
+  return <AdminUsersList
+  initialUsers={users}
+  currentUserEmail={session.user.email}
+/>;
 }

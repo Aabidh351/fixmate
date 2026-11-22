@@ -1,8 +1,20 @@
+
+"use client";
+
+import { useState } from "react";
 import { AdminBooking } from "@/app/dashboard/admin/bookings/page";
 
 type Props = {
   bookings: AdminBooking[];
 };
+
+const filters = [
+  { label: "All", value: "all" },
+  { label: "Requested", value: "requested" },
+  { label: "Accepted", value: "accepted" },
+  { label: "In Progress", value: "in-progress" },
+  { label: "Completed", value: "completed" },
+];
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -28,6 +40,15 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function AdminBookingsList({ bookings }: Props) {
+  const [activeFilter, setActiveFilter] = useState("all");
+
+  const filteredBookings =
+    activeFilter === "all"
+      ? bookings
+      : bookings.filter(
+          (booking) => booking.status === activeFilter
+        );
+
   return (
     <div className="space-y-6">
       <div>
@@ -39,10 +60,31 @@ export default function AdminBookingsList({ bookings }: Props) {
         </p>
       </div>
 
+      {/* Status Filters */}
+      <div className="flex flex-wrap gap-2">
+        {filters.map((filter) => (
+          <button
+            key={filter.value}
+            type="button"
+            onClick={() => setActiveFilter(filter.value)}
+            className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+              activeFilter === filter.value
+                ? "bg-blue-600 text-white"
+                : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
         <div className="border-b border-slate-200 px-6 py-4">
           <p className="font-semibold text-slate-800">
-            All Bookings ({bookings.length})
+            {activeFilter === "all"
+              ? "All Bookings"
+              : `${filters.find((filter) => filter.value === activeFilter)?.label} Bookings`}
+            {" "}({filteredBookings.length})
           </p>
         </div>
 
@@ -61,7 +103,7 @@ export default function AdminBookingsList({ bookings }: Props) {
             </thead>
 
             <tbody className="divide-y divide-slate-100">
-              {bookings.map((booking) => (
+              {filteredBookings.map((booking) => (
                 <tr key={booking._id}>
                   <td className="whitespace-nowrap px-6 py-4 font-medium text-slate-800">
                     {booking.serviceTitle}
@@ -103,13 +145,13 @@ export default function AdminBookingsList({ bookings }: Props) {
                 </tr>
               ))}
 
-              {bookings.length === 0 && (
+              {filteredBookings.length === 0 && (
                 <tr>
                   <td
                     colSpan={7}
                     className="px-6 py-10 text-center text-slate-500"
                   >
-                    No bookings found.
+                    No bookings found for this status.
                   </td>
                 </tr>
               )}

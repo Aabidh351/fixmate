@@ -9,9 +9,13 @@ import type { AdminUser } from "@/app/dashboard/admin/users/page";
 
 type Props = {
   initialUsers: AdminUser[];
+  currentUserEmail: string;
 };
 
-export default function AdminUsersList({ initialUsers }: Props) {
+export default function AdminUsersList({
+  initialUsers,
+  currentUserEmail,
+}: Props) {
   const [users, setUsers] = useState(initialUsers);
   const [selectedRoles, setSelectedRoles] = useState<
     Record<string, AdminUser["role"]>
@@ -80,7 +84,9 @@ export default function AdminUsersList({ initialUsers }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Manage Users</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          Manage Users
+        </h1>
         <p className="mt-2 text-sm text-slate-500">
           View registered users and manage their roles.
         </p>
@@ -107,13 +113,23 @@ export default function AdminUsersList({ initialUsers }: Props) {
 
             <tbody className="divide-y divide-slate-100">
               {users.map((user) => {
-                const selectedRole = selectedRoles[user._id] ?? user.role;
+                const isCurrentAdmin =
+                  user.email === currentUserEmail;
+
+                const selectedRole =
+                  selectedRoles[user._id] ?? user.role;
+
                 const hasChanged = selectedRole !== user.role;
 
                 return (
                   <tr key={user._id}>
                     <td className="whitespace-nowrap px-6 py-4 font-medium text-slate-800">
                       {user.name}
+                      {isCurrentAdmin && (
+                        <span className="ml-2 text-xs text-blue-600">
+                          (You)
+                        </span>
+                      )}
                     </td>
 
                     <td className="whitespace-nowrap px-6 py-4 text-slate-600">
@@ -121,21 +137,27 @@ export default function AdminUsersList({ initialUsers }: Props) {
                     </td>
 
                     <td className="px-6 py-4">
-                      <select
-                        value={selectedRole}
-                        disabled={updatingId === user._id}
-                        onChange={(event) =>
-                          setSelectedRoles((current) => ({
-                            ...current,
-                            [user._id]: event.target.value as AdminUser["role"],
-                          }))
-                        }
-                        className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm capitalize text-slate-700 outline-none focus:border-slate-400 disabled:opacity-50"
-                      >
-                        <option value="customer">Customer</option>
-                        <option value="technician">Technician</option>
-                        <option value="admin">Admin</option>
-                      </select>
+                      {isCurrentAdmin ? (
+                        <span className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm capitalize text-slate-700 outline-none focus:border-slate-400 disabled:opacity-50">
+                          {user.role}
+                        </span>
+                      ) : (
+                        <select
+                          value={selectedRole}
+                          disabled={updatingId === user._id}
+                          onChange={(event) =>
+                            setSelectedRoles((current) => ({
+                              ...current,
+                              [user._id]: event.target.value as AdminUser["role"],
+                            }))
+                          }
+                          className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm capitalize text-slate-700 outline-none focus:border-slate-400 disabled:opacity-50"
+                        >
+                          <option value="customer">Customer</option>
+                          <option value="technician">Technician</option>
+                          <option value="admin">Admin</option>
+                        </select>
+                      )}
                     </td>
 
                     <td className="whitespace-nowrap px-6 py-4 text-slate-500">
@@ -145,13 +167,23 @@ export default function AdminUsersList({ initialUsers }: Props) {
                     </td>
 
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => updateRole(user._id)}
-                        disabled={!hasChanged || updatingId === user._id}
-                        className="rounded-lg bg-green-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                      >
-                        {updatingId === user._id ? "Saving..." : "Update"}
-                      </button>
+                      {isCurrentAdmin ? (
+                        <span className="text-xs text-slate-400">
+                          Not editable
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => updateRole(user._id)}
+                          disabled={
+                            !hasChanged || updatingId === user._id
+                          }
+                          className="rounded-lg bg-green-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-40"
+                        >
+                          {updatingId === user._id
+                            ? "Saving..."
+                            : "Update"}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 );
