@@ -22,6 +22,16 @@ function connect(): Promise<MongoClient> {
     serverSelectionTimeoutMS: 10_000,
   });
 
+  // Surface the per-node SDAM error in Vercel logs. The aggregate log only
+  // says "ReplicaSetNoPrimary"; this shows why each Atlas node was rejected.
+  client.on("serverDescriptionChanged", ({ address, newDescription }) => {
+    if (newDescription.error) {
+      console.error(
+        `[mongo] ${address}: ${newDescription.error.name}: ${newDescription.error.message}`
+      );
+    }
+  });
+
   const promise = client.connect().catch((error) => {
     // A failed connect leaves the driver topology closed. If that promise is
     // cached, every later request reuses a dead client and keeps throwing
